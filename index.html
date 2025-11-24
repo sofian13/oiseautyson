@@ -4,8 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jeu Concours Officiel - Gagne la Mégane 4 d'Oiseau Tyson</title>
+    
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800;900&display=swap" rel="stylesheet">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <script>
@@ -14,200 +17,282 @@
                 extend: {
                     fontFamily: { sans: ['Montserrat', 'sans-serif'] },
                     colors: {
-                        tysonGold: '#FFD700', // Or Jaune
-                        tysonDark: '#0A0A0A', // Noir profond
-                        tysonGray: '#1F1F1F'  // Gris anthracite
+                        tysonGold: '#FFD700',   // Or Jaune vibrant
+                        tysonDark: '#0A0A0A',   // Noir profond du fond
+                        tysonGray: '#1F1F1F'    // Gris anthracite pour les boites
                     },
                     boxShadow: {
-                        'neon': '0 0 20px rgba(255, 215, 0, 0.5), 0 0 40px rgba(255, 215, 0, 0.2)'
+                        // Effet de lueur néon dorée
+                        'neon': '0 0 15px rgba(255, 215, 0, 0.5), 0 0 30px rgba(255, 215, 0, 0.2)',
+                        // Lueur intérieure pour le timer
+                        'neon-box': 'inset 0 0 10px rgba(255, 215, 0, 0.2)'
                     }
                 }
             }
         }
     </script>
+    
     <style>
-        body { background-color: #0A0A0A; background-image: radial-gradient(circle at top center, #1F1F1F 0%, #0A0A0A 70%); }
-        .btn-gradient { background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%); }
-        .glass-effect { backdrop-filter: blur(12px); background-color: rgba(10, 10, 10, 0.9); }
+        /* Fond global avec un léger dégradé radial pour la profondeur */
+        body { background-color: #0A0A0A; background-image: radial-gradient(circle at top center, #1C1C1C 0%, #000000 80%); }
+        
+        /* Effet de verre dépoli pour la barre de navigation */
+        .glass-effect { backdrop-filter: blur(15px); background-color: rgba(0, 0, 0, 0.85); }
+        
+        /* Dégradé doré pour les boutons d'action */
+        .btn-gradient { background: linear-gradient(135deg, #FFD700 0%, #E0A800 100%); }
+        
+        /* Animation de pulsation pour le texte "Fin du concours" */
+        @keyframes pulse-red-gold {
+            0%, 100% { color: #ef4444; text-shadow: none; } /* Rouge */
+            50% { color: #FFD700; text-shadow: 0 0 10px rgba(255, 215, 0, 0.8); } /* Or */
+        }
+        .animate-urgent { animation: pulse-red-gold 2s infinite; }
     </style>
 </head>
 <body class="text-white antialiased overflow-x-hidden">
 
-    <nav class="fixed top-0 w-full z-50 glass-effect border-b border-white/10">
-        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center relative">
-            
-            <div class="text-2xl font-black tracking-tighter uppercase">
-                Oiseau<span class="text-tysonGold drop-shadow-[0_0_10px_rgba(255,215,0,0.8)]">Tyson</span>
-            </div>
+    <nav class="fixed top-0 w-full z-50 glass-effect border-b border-white/5">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="text-xl md:text-2xl font-black tracking-tighter uppercase flex items-center gap-2 relative z-10">
+                <span>Oiseau<span class="text-tysonGold drop-shadow-[0_0_8px_rgba(255,215,0,0.6)]">Tyson</span></span>
+            </a>
 
-            <div class="hidden md:flex space-x-8 text-sm font-bold uppercase tracking-widest items-center">
+            <div class="hidden md:flex space-x-8 text-xs font-bold uppercase tracking-widest items-center">
                 <a href="#la-bête" class="hover:text-tysonGold transition duration-300">La Bête</a>
                 <a href="#comment-ca-marche" class="hover:text-tysonGold transition duration-300">Fonctionnement</a>
-                <a href="#participer" class="text-tysonGold transition duration-300 bg-white/10 px-4 py-2 rounded-full hover:bg-white/20">Participer</a>
+                <a href="#participer" class="text-black bg-tysonGold px-6 py-2 rounded-full font-black hover:bg-white transition transform hover:scale-105 shadow-neon">Participer</a>
             </div>
 
-            <button id="mobile-menu-btn" class="md:hidden text-white text-2xl focus:outline-none">
+            <button id="mobile-menu-btn" class="md:hidden text-white text-2xl focus:outline-none p-2 relative z-10">
                 <i class="fa-solid fa-bars"></i>
             </button>
         </div>
 
-        <div id="mobile-menu" class="hidden md:hidden bg-tysonDark border-t border-white/10 absolute w-full left-0 top-full shadow-2xl">
-            <div class="flex flex-col p-6 space-y-4 text-center font-bold uppercase tracking-widest">
-                <a href="#la-bête" class="block py-2 hover:text-tysonGold transition" onclick="toggleMenu()">La Bête</a>
-                <a href="#comment-ca-marche" class="block py-2 hover:text-tysonGold transition" onclick="toggleMenu()">Fonctionnement</a>
-                <a href="#participer" class="block py-3 bg-tysonGold text-black rounded-lg mx-8 shadow-neon" onclick="toggleMenu()">Participer</a>
+        <div id="mobile-menu" class="hidden md:hidden bg-black/95 backdrop-blur-xl border-b border-tysonGold/20 absolute w-full left-0 top-full shadow-2xl transition-all duration-300">
+            <div class="flex flex-col p-6 space-y-4 text-center font-bold uppercase tracking-widest text-sm">
+                <a href="#la-bête" class="block py-3 hover:text-tysonGold border-b border-gray-800" onclick="toggleMenu()">La Bête</a>
+                <a href="#comment-ca-marche" class="block py-3 hover:text-tysonGold border-b border-gray-800" onclick="toggleMenu()">Fonctionnement</a>
+                <a href="#participer" class="block py-4 mt-2 bg-tysonGold text-black font-black rounded-lg shadow-neon hover:brightness-110" onclick="toggleMenu()">JE VEUX GAGNER</a>
             </div>
         </div>
     </nav>
 
-    <header class="relative pt-32 pb-20 md:pt-48 md:pb-32 px-6 overflow-hidden text-center">
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-tysonGold opacity-20 blur-[150px] rounded-full -z-10"></div>
+    <header class="relative pt-28 pb-16 md:pt-48 md:pb-32 px-4 overflow-hidden text-center">
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-gradient-to-b from-tysonGold/10 to-transparent pointer-events-none -z-20"></div>
 
-        <h4 class="text-tysonGold font-bold tracking-[0.3em] uppercase mb-4 animate-pulse">Concours Officiel "La Miff"</h4>
-        <h1 class="text-5xl md:text-8xl font-black uppercase mb-6 leading-none">
+        <h4 class="text-tysonGold text-xs md:text-sm font-bold tracking-[0.3em] uppercase mb-4 animate-pulse">Concours Officiel Fin d'Année</h4>
+        
+        <h1 class="text-4xl md:text-7xl lg:text-8xl font-black uppercase mb-4 leading-none tracking-tight">
             Gagne la <br>
-            <span class="text-transparent bg-clip-text bg-gradient-to-r from-tysonGold to-orange-500 filter drop-shadow-[0_0_15px_rgba(255,215,0,0.6)]">Mégane 4</span>
+            <span class="text-transparent bg-clip-text bg-gradient-to-b from-tysonGold to-orange-600 drop-shadow-sm">Mégane 4</span>
         </h1>
-        <p class="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto mb-10">
-            Plus qu'une voiture, un trophée. Achète la photo exclusive et repars avec les clés du gamos. <span class="text-white font-bold block mt-2">1 Photo achetée = 1 Chance.</span>
+        
+        <p class="text-gray-400 text-sm md:text-xl max-w-xl mx-auto mb-8 px-4 leading-relaxed">
+            Achète la photo exclusive de Noël et repars avec les clés du gamos. <br>
+            <span class="text-white font-bold">1 Photo achetée = 1 Chance de gagner.</span>
         </p>
 
-        <div class="relative max-w-5xl mx-auto group perspective-1000 my-12">
-            <img src="image/megane.jpg" alt="Renault Mégane 4 Cadeau Oiseau Tyson" class="w-full transform transition duration-700 group-hover:scale-105 drop-shadow-[0_20px_40px_rgba(0,0,0,0.8)] rounded-xl">
+        <div class="flex flex-col items-center justify-center mb-12 scale-90 md:scale-100 relative z-10">
+            <p class="text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold mb-4 animate-urgent">
+                <i class="fa-regular fa-clock mr-2"></i> Fin du concours dans :
+            </p>
+            <div class="flex items-center gap-2 md:gap-4 text-center">
+                <div class="bg-tysonDark/80 backdrop-blur-sm border border-tysonGold/20 rounded-xl p-3 md:p-4 w-16 md:w-24 shadow-neon-box flex flex-col justify-center">
+                    <span id="d" class="block text-2xl md:text-4xl font-black text-white leading-none mb-1">00</span>
+                    <span class="text-[9px] md:text-[10px] text-tysonGold/70 uppercase font-bold tracking-wider">Jours</span>
+                </div>
+                <span class="text-tysonGold/50 text-xl md:text-3xl font-light pb-4">:</span>
+                <div class="bg-tysonDark/80 backdrop-blur-sm border border-tysonGold/20 rounded-xl p-3 md:p-4 w-16 md:w-24 shadow-neon-box flex flex-col justify-center">
+                    <span id="h" class="block text-2xl md:text-4xl font-black text-white leading-none mb-1">00</span>
+                    <span class="text-[9px] md:text-[10px] text-tysonGold/70 uppercase font-bold tracking-wider">Heures</span>
+                </div>
+                <span class="text-tysonGold/50 text-xl md:text-3xl font-light pb-4">:</span>
+                <div class="bg-tysonDark/80 backdrop-blur-sm border border-tysonGold/20 rounded-xl p-3 md:p-4 w-16 md:w-24 shadow-neon-box flex flex-col justify-center">
+                    <span id="m" class="block text-2xl md:text-4xl font-black text-white leading-none mb-1">00</span>
+                    <span class="text-[9px] md:text-[10px] text-tysonGold/70 uppercase font-bold tracking-wider">Min</span>
+                </div>
+                <span class="text-tysonGold/50 text-xl md:text-3xl font-light pb-4 hidden md:block">:</span>
+                <div class="bg-tysonDark/80 backdrop-blur-sm border border-tysonGold/50 rounded-xl p-3 md:p-4 w-16 md:w-24 shadow-neon hidden md:flex flex-col justify-center relative overflow-hidden">
+                    <div class="absolute inset-0 bg-gradient-to-t from-transparent via-tysonGold/10 to-transparent animate-pulse"></div>
+                    <span id="s" class="block text-2xl md:text-4xl font-black text-tysonGold leading-none mb-1 relative z-10">00</span>
+                    <span class="text-[9px] md:text-[10px] text-tysonGold/70 uppercase font-bold tracking-wider relative z-10">Sec</span>
+                </div>
+            </div>
         </div>
 
-        <a href="#participer" class="inline-flex items-center btn-gradient text-black font-black text-xl py-4 px-12 rounded-full hover:scale-105 transition transform shadow-neon">
-            JE TENTE MA CHANCE <i class="fa-solid fa-arrow-right ml-4"></i>
+        <div class="relative max-w-4xl mx-auto mt-12 mb-12 px-4 group z-0">
+            
+            <div class="relative rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.8)] border border-white/10">
+                
+                <img src="image/megane.jpg" alt="Renault Mégane 4 Cadeau de Noël" class="w-full h-auto object-cover transform transition duration-700 group-hover:scale-105">
+                
+                <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#0A0A0A] opacity-95"></div>
+                
+                <div class="absolute inset-0 bg-gradient-to-r from-[#0A0A0A]/60 via-transparent to-[#0A0A0A]/60 pointer-events-none"></div>
+            </div>
+
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] h-[110%] bg-tysonGold opacity-10 blur-3xl rounded-[50%] -z-10 group-hover:opacity-20 transition duration-500"></div>
+        </div>
+        <a href="#participer" class="relative z-10 inline-flex items-center justify-center btn-gradient text-black font-black text-lg md:text-xl py-4 px-8 md:px-16 rounded-full hover:scale-105 transition transform shadow-neon w-full md:w-auto max-w-xs group overflow-hidden">
+            <span class="relative z-10 flex items-center">
+                JE TENTE MA CHANCE <i class="fa-solid fa-arrow-right ml-3 group-hover:translate-x-1 transition"></i>
+            </span>
+            <div class="absolute inset-0 h-full w-full bg-white/30 skew-x-12 -translate-x-full group-hover:translate-x-full transition duration-700 ease-in-out z-0"></div>
         </a>
     </header>
 
-    <section id="la-bête" class="py-20 bg-tysonDark relative border-t border-white/5">
-        <div class="max-w-6xl mx-auto px-6">
+    <section id="la-bête" class="py-20 bg-tysonDark relative border-t border-white/5 overflow-hidden">
+        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-5 mix-blend-overlay pointer-events-none"></div>
+
+        <div class="max-w-6xl mx-auto px-6 relative z-10">
             <div class="flex items-center mb-12">
-                <div class="h-1 w-12 bg-tysonGold mr-4"></div>
-                <h2 class="text-3xl font-black uppercase tracking-wider">La Mégane 4 en détails</h2>
+                <div class="h-1 w-12 bg-tysonGold mr-4 shadow-neon"></div>
+                <h2 class="text-2xl md:text-3xl font-black uppercase tracking-wider">La Mégane 4 en détails</h2>
             </div>
 
             <div class="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-8">
-                <div class="bg-tysonGray p-6 rounded-2xl border border-white/10 flex items-center hover:border-tysonGold/50 transition duration-300 group">
-                    <i class="fa-solid fa-horse-head text-4xl text-tysonGold mr-6 group-hover:scale-110 transition"></i>
+                <div class="bg-tysonGray/50 backdrop-blur-sm p-6 rounded-2xl border border-white/10 flex flex-col md:flex-row items-start md:items-center hover:border-tysonGold/50 transition duration-300 group">
+                    <i class="fa-solid fa-horse-head text-3xl md:text-4xl text-tysonGold mb-3 md:mb-0 md:mr-6 group-hover:scale-110 transition drop-shadow-sm"></i>
                     <div>
-                        <h4 class="text-gray-500 text-xs uppercase tracking-widest mb-1">Modèle</h4>
-                        <div class="text-xl md:text-2xl font-black">Mégane 4</div>
+                        <h4 class="text-gray-500 text-[10px] md:text-xs uppercase tracking-widest mb-1 font-bold">Modèle</h4>
+                        <div class="text-lg md:text-2xl font-black">Mégane 4 (RS Line)</div>
                     </div>
                 </div>
-                <div class="bg-tysonGray p-6 rounded-2xl border border-white/10 flex items-center hover:border-tysonGold/50 transition duration-300 group">
-                    <i class="fa-solid fa-gauge-high text-4xl text-tysonGold mr-6 group-hover:scale-110 transition"></i>
+                 <div class="bg-tysonGray/50 backdrop-blur-sm p-6 rounded-2xl border border-white/10 flex flex-col md:flex-row items-start md:items-center hover:border-tysonGold/50 transition duration-300 group">
+                    <i class="fa-solid fa-gauge-high text-3xl md:text-4xl text-tysonGold mb-3 md:mb-0 md:mr-6 group-hover:scale-110 transition drop-shadow-sm"></i>
                     <div>
-                        <h4 class="text-gray-500 text-xs uppercase tracking-widest mb-1">Moteur</h4>
-                        <div class="text-xl md:text-2xl font-black">Turbo Essence</div>
+                        <h4 class="text-gray-500 text-[10px] md:text-xs uppercase tracking-widest mb-1 font-bold">Moteur</h4>
+                        <div class="text-lg md:text-2xl font-black">Turbo Essence</div>
                     </div>
                 </div>
-                <div class="bg-tysonGray p-6 rounded-2xl border border-white/10 flex items-center hover:border-tysonGold/50 transition duration-300 group">
-                    <i class="fa-solid fa-gear text-4xl text-tysonGold mr-6 group-hover:scale-110 transition"></i>
+                 <div class="bg-tysonGray/50 backdrop-blur-sm p-6 rounded-2xl border border-white/10 flex flex-col md:flex-row items-start md:items-center hover:border-tysonGold/50 transition duration-300 group">
+                    <i class="fa-solid fa-gear text-3xl md:text-4xl text-tysonGold mb-3 md:mb-0 md:mr-6 group-hover:scale-110 transition drop-shadow-sm"></i>
                     <div>
-                        <h4 class="text-gray-500 text-xs uppercase tracking-widest mb-1">Boîte</h4>
-                        <div class="text-xl md:text-2xl font-black">Auto EDC</div>
+                        <h4 class="text-gray-500 text-[10px] md:text-xs uppercase tracking-widest mb-1 font-bold">Boîte</h4>
+                        <div class="text-lg md:text-2xl font-black">Automatique EDC</div>
                     </div>
                 </div>
-                <div class="bg-tysonGray p-6 rounded-2xl border border-white/10 flex items-center hover:border-tysonGold/50 transition duration-300 group">
-                    <i class="fa-solid fa-palette text-4xl text-tysonGold mr-6 group-hover:scale-110 transition"></i>
+                 <div class="bg-tysonGray/50 backdrop-blur-sm p-6 rounded-2xl border border-white/10 flex flex-col md:flex-row items-start md:items-center hover:border-tysonGold/50 transition duration-300 group">
+                    <i class="fa-solid fa-palette text-3xl md:text-4xl text-tysonGold mb-3 md:mb-0 md:mr-6 group-hover:scale-110 transition drop-shadow-sm"></i>
                     <div>
-                        <h4 class="text-gray-500 text-xs uppercase tracking-widest mb-1">Couleur</h4>
-                        <div class="text-xl md:text-2xl font-black">Full Black</div>
+                        <h4 class="text-gray-500 text-[10px] md:text-xs uppercase tracking-widest mb-1 font-bold">Couleur</h4>
+                        <div class="text-lg md:text-2xl font-black">Full Black / Noir</div>
                     </div>
                 </div>
-                <div class="bg-tysonGray p-6 rounded-2xl border border-white/10 flex items-center hover:border-tysonGold/50 transition duration-300 group">
-                    <i class="fa-solid fa-couch text-4xl text-tysonGold mr-6 group-hover:scale-110 transition"></i>
+                 <div class="bg-tysonGray/50 backdrop-blur-sm p-6 rounded-2xl border border-white/10 flex flex-col md:flex-row items-start md:items-center hover:border-tysonGold/50 transition duration-300 group">
+                    <i class="fa-solid fa-couch text-3xl md:text-4xl text-tysonGold mb-3 md:mb-0 md:mr-6 group-hover:scale-110 transition drop-shadow-sm"></i>
                     <div>
-                        <h4 class="text-gray-500 text-xs uppercase tracking-widest mb-1">Intérieur</h4>
-                        <div class="text-xl md:text-2xl font-black">Sport / Digital</div>
+                        <h4 class="text-gray-500 text-[10px] md:text-xs uppercase tracking-widest mb-1 font-bold">Intérieur</h4>
+                        <div class="text-lg md:text-2xl font-black">Sport / Digital</div>
                     </div>
                 </div>
-                <div class="bg-tysonGray p-6 rounded-2xl border border-white/10 flex items-center hover:border-tysonGold/50 transition duration-300 group">
-                    <i class="fa-solid fa-certificate text-4xl text-tysonGold mr-6 group-hover:scale-110 transition"></i>
-                    <div>
-                        <h4 class="text-gray-500 text-xs uppercase tracking-widest mb-1">État</h4>
-                        <div class="text-xl md:text-2xl font-black text-tysonGold">Validé par Tyson</div>
+                 <div class="bg-tysonGray/50 backdrop-blur-sm p-6 rounded-2xl border border-tysonGold/30 flex flex-col md:flex-row items-start md:items-center hover:border-tysonGold transition duration-300 group relative overflow-hidden">
+                     <div class="absolute inset-0 bg-tysonGold/5 animate-pulse pointer-events-none"></div>
+                    <i class="fa-solid fa-circle-check text-3xl md:text-4xl text-tysonGold mb-3 md:mb-0 md:mr-6 group-hover:scale-110 transition drop-shadow-sm relative z-10"></i>
+                    <div class="relative z-10">
+                        <h4 class="text-gray-500 text-[10px] md:text-xs uppercase tracking-widest mb-1 font-bold">État</h4>
+                        <div class="text-lg md:text-2xl font-black text-tysonGold">Validé par Tyson</div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="comment-ca-marche" class="py-20 relative overflow-hidden">
+    <section id="comment-ca-marche" class="py-20 relative overflow-hidden bg-gradient-to-b from-tysonDark to-black">
         <div class="max-w-6xl mx-auto px-6 relative z-10">
-             <div class="flex items-center justify-end mb-12 text-right">
-                <h2 class="text-3xl font-black uppercase tracking-wider mr-4">Comment participer ?</h2>
-                <div class="h-1 w-12 bg-tysonGold"></div>
+             <div class="flex items-center justify-end mb-16 text-right">
+                <h2 class="text-2xl md:text-3xl font-black uppercase tracking-wider mr-4">Comment participer ?</h2>
+                <div class="h-1 w-12 bg-tysonGold shadow-neon"></div>
             </div>
 
             <div class="grid md:grid-cols-3 gap-8 text-center md:text-left">
-                <div class="bg-tysonGray/50 p-8 rounded-2xl border-t-4 border-tysonGold relative">
-                    <div class="absolute -top-6 left-1/2 md:left-8 -translate-x-1/2 md:translate-x-0 w-12 h-12 bg-tysonGold rounded-full flex items-center justify-center text-black font-black text-xl shadow-neon">1</div>
-                    <h3 class="text-2xl font-bold mb-4 mt-4">Achète la Photo</h3>
-                    <p class="text-gray-400">Achète la **Photo Numérique Exclusive** d'Oiseau Tyson pour 5,00€. C'est le produit artistique que tu achètes réellement.</p>
+                <div class="bg-tysonGray/30 backdrop-blur-md p-8 rounded-3xl border-t-4 border-tysonGold relative group hover:bg-tysonGray/50 transition duration-300">
+                    <div class="absolute -top-6 left-1/2 md:left-8 -translate-x-1/2 md:translate-x-0 w-12 h-12 bg-tysonGold rounded-full flex items-center justify-center text-black font-black text-xl shadow-neon group-hover:scale-110 transition">1</div>
+                    <h3 class="text-xl md:text-2xl font-bold mb-4 mt-4 text-white">Achète la Photo</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">Achète la **Photo Numérique Exclusive** de Noël d'Oiseau Tyson pour 5,00€. C'est le produit artistique que tu achètes.</p>
                 </div>
-                <div class="bg-tysonGray/50 p-8 rounded-2xl border-t-4 border-tysonGold relative">
-                    <div class="absolute -top-6 left-1/2 md:left-8 -translate-x-1/2 md:translate-x-0 w-12 h-12 bg-tysonGold rounded-full flex items-center justify-center text-black font-black text-xl shadow-neon">2</div>
-                    <h3 class="text-2xl font-bold mb-4 mt-4">Reçois ta chance</h3>
-                    <p class="text-gray-400">Pour chaque photo achetée, une participation au tirage au sort t'est offerte automatiquement. C'est cadeau.</p>
+                <div class="bg-tysonGray/30 backdrop-blur-md p-8 rounded-3xl border-t-4 border-tysonGold relative group hover:bg-tysonGray/50 transition duration-300">
+                    <div class="absolute -top-6 left-1/2 md:left-8 -translate-x-1/2 md:translate-x-0 w-12 h-12 bg-tysonGold rounded-full flex items-center justify-center text-black font-black text-xl shadow-neon group-hover:scale-110 transition">2</div>
+                    <h3 class="text-xl md:text-2xl font-bold mb-4 mt-4 text-white">Reçois ta chance</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">Pour chaque photo achetée, nous t'offrons automatiquement 1 participation au tirage au sort. C'est cadeau.</p>
                 </div>
-                <div class="bg-tysonGray/50 p-8 rounded-2xl border-t-4 border-tysonGold relative">
-                    <div class="absolute -top-6 left-1/2 md:left-8 -translate-x-1/2 md:translate-x-0 w-12 h-12 bg-tysonGold rounded-full flex items-center justify-center text-black font-black text-xl shadow-neon">3</div>
-                    <h3 class="text-2xl font-bold mb-4 mt-4">Le Tirage</h3>
-                    <p class="text-gray-400">Attends le tirage au sort officiel sous contrôle d'huissier. Le gagnant repart avec la voiture.</p>
+                <div class="bg-tysonGray/30 backdrop-blur-md p-8 rounded-3xl border-t-4 border-tysonGold relative group hover:bg-tysonGray/50 transition duration-300">
+                    <div class="absolute -top-6 left-1/2 md:left-8 -translate-x-1/2 md:translate-x-0 w-12 h-12 bg-tysonGold rounded-full flex items-center justify-center text-black font-black text-xl shadow-neon group-hover:scale-110 transition">3</div>
+                    <h3 class="text-xl md:text-2xl font-bold mb-4 mt-4 text-white">Le Tirage de Noël</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">Attends le tirage au sort officiel le 24 Décembre sous contrôle d'huissier. Le gagnant repart en Mégane.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="participer" class="py-24 bg-tysonDark border-t border-tysonGold/20 relative">
-        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10 mix-blend-overlay"></div>
+    <section id="participer" class="py-24 bg-tysonDark border-t border-tysonGold/20 relative overflow-hidden">
+        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10 mix-blend-overlay pointer-events-none"></div>
 
-        <div class="max-w-4xl mx-auto px-6 relative z-10">
-            <div class="bg-tysonGray border border-white/10 rounded-3xl p-8 md:p-12 shadow-2xl relative overflow-hidden">
-                <div class="absolute -top-20 -right-20 w-64 h-64 bg-tysonGold opacity-20 blur-[80px] rounded-full pointer-events-none"></div>
+        <div class="max-w-5xl mx-auto px-6 relative z-10">
+            <div class="bg-tysonGray/80 backdrop-blur-lg border border-white/10 rounded-[2rem] p-8 md:p-12 shadow-2xl relative overflow-hidden">
+                <div class="absolute -top-40 -right-40 w-96 h-96 bg-tysonGold opacity-10 blur-[100px] rounded-full pointer-events-none"></div>
                 
-                <div class="text-center mb-10">
-                    <h2 class="text-4xl font-black uppercase mb-2">Choisis ton Pack Photo</h2>
-                    <p class="text-tysonGold text-lg">Multiplie les achats pour multiplier tes chances.</p>
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-5xl font-black uppercase mb-3 text-white">Choisis ton Pack Photo</h2>
+                    <p class="text-tysonGold text-base md:text-lg font-bold">Multiplie les achats pour multiplier tes chances pour Noël.</p>
                 </div>
                 
                 <div class="md:flex md:space-x-12 items-center">
-                    <div class="md:w-1/2 mb-8 md:mb-0">
-                        <div class="text-sm text-tysonGold uppercase tracking-widest font-bold mb-2"><i class="fa-solid fa-image mr-2"></i> Tirage Photo Numérique</div>
-                        <h3 class="text-3xl font-bold text-white mb-6">Photo Exclusive "La Mégane"</h3>
-                        <ul class="space-y-4 mb-8">
-                            <li class="flex items-center text-lg"><i class="fa-solid fa-camera-retro text-tysonGold mr-3"></i> Photo HD (Download)</li>
-                            <li class="flex items-center bg-tysonGold/10 p-3 rounded-lg text-tysonGold font-bold border border-tysonGold/30"><i class="fa-solid fa-gift mr-3"></i> +1 Participation Offerte</li>
+                    <div class="md:w-1/2 mb-10 md:mb-0">
+                        <div class="flex items-center mb-4">
+                            <span class="bg-tysonGold text-black text-xs font-black uppercase tracking-widest px-3 py-1 rounded-full animate-pulse mr-3">Édition Limitée Noël</span>
+                        </div>
+                        <div class="text-sm text-tysonGold uppercase tracking-widest font-bold mb-2 flex items-center"><i class="fa-solid fa-image mr-2"></i> Produit Numérique</div>
+                        <h3 class="text-2xl md:text-3xl font-bold text-white mb-8">Photo Exclusive "La Mégane & Cadeaux"</h3>
+                        <ul class="space-y-5 mb-8">
+                            <li class="flex items-start text-base md:text-lg">
+                                <i class="fa-solid fa-circle-check text-tysonGold mt-1 mr-4 drop-shadow-sm"></i>
+                                <span class="text-gray-200">Photo HD Artistique Inédite (Téléchargement immédiat)</span>
+                            </li>
+                            
+                            <li class="flex items-center bg-tysonGold/10 p-4 rounded-xl text-tysonGold font-bold border border-tysonGold/30 shadow-neon-box">
+                                <i class="fa-solid fa-gift text-xl mr-4 animate-bounce"></i>
+                                <span>+1 Participation Offerte au Tirage</span>
+                            </li>
                         </ul>
                     </div>
 
-                    <div class="md:w-1/2 bg-black/50 p-6 rounded-2xl border border-white/10">
-                        <label class="block text-gray-400 text-sm mb-4 uppercase tracking-wider">Quantité de photos :</label>
-                        <div class="flex items-center justify-between bg-tysonDark rounded-xl p-4 mb-8 border border-white/10">
-                            <button onclick="updateQuantity(-1)" class="w-12 h-12 bg-tysonGray rounded-lg text-2xl hover:bg-white/10 transition text-tysonGold">-</button>
-                            <span id="qty" class="font-black text-4xl">1</span>
-                            <button onclick="updateQuantity(1)" class="w-12 h-12 bg-tysonGray rounded-lg text-2xl hover:bg-white/10 transition text-tysonGold">+</button>
+                    <div class="md:w-1/2 bg-black/60 p-6 md:p-8 rounded-2xl border border-white/10 shadow-lg relative">
+                        <label class="block text-gray-400 text-xs font-bold mb-4 uppercase tracking-wider">Quantité de photos :</label>
+                        
+                        <div class="flex items-center justify-between bg-tysonDark rounded-xl p-2 mb-8 border border-white/10">
+                            <button onclick="updateQuantity(-1)" class="w-12 h-12 bg-tysonGray rounded-lg text-2xl text-tysonGold hover:bg-white/10 transition flex items-center justify-center active:scale-95">-</button>
+                            <span id="qty" class="font-black text-4xl text-white px-4">1</span>
+                            <button onclick="updateQuantity(1)" class="w-12 h-12 bg-tysonGold rounded-lg text-2xl text-black hover:bg-yellow-400 transition flex items-center justify-center active:scale-95 shadow-neon">+</button>
                         </div>
 
-                        <div class="space-y-4 mb-8">
-                            <div class="flex justify-between items-center">
-                                <span class="text-gray-400">Total à payer :</span>
-                                <span class="text-4xl font-black text-white tracking-tight" id="totalPrice">5,00 €</span>
+                        <div class="space-y-4 mb-8 bg-white/5 p-4 rounded-xl">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-gray-400 uppercase text-sm font-bold">Total à payer :</span>
+                                <span class="text-3xl md:text-4xl font-black text-white tracking-tight" id="totalPrice">5,00 €</span>
                             </div>
-                            <div class="flex justify-between items-center bg-tysonGold/20 p-3 rounded-lg">
-                                <span class="text-tysonGold font-bold">Tes chances :</span>
-                                <span class="text-xl font-black text-tysonGold" id="chancesText"><i class="fa-solid fa-ticket-simple mr-2"></i> 1 chance</span>
+                            <div class="flex justify-between items-center text-tysonGold/80 text-sm">
+                                <span>Dont TVA (20%) :</span>
+                                <span id="tvaPrice">0,83 €</span>
                             </div>
                         </div>
+                         
+                        <div class="flex justify-between items-center bg-tysonGold/20 p-4 rounded-xl mb-8 border border-tysonGold/30 animate-pulse">
+                             <span class="text-tysonGold font-bold uppercase text-sm">Tes chances pour Noël :</span>
+                             <span class="text-xl font-black text-tysonGold flex items-center" id="chancesText"><i class="fa-solid fa-ticket-simple mr-2"></i> 1 Chance</span>
+                         </div>
 
-                        <button onclick="checkout()" class="w-full btn-gradient text-black font-black py-5 rounded-xl text-xl hover:brightness-110 transition shadow-neon flex justify-center items-center relative overflow-hidden group">
-                            <span class="relative z-10">ACHETER LA PHOTO</span>
+                        <button onclick="checkout()" class="w-full btn-gradient text-black font-black py-5 rounded-xl text-xl hover:brightness-110 transition shadow-neon flex justify-center items-center relative overflow-hidden group active:scale-[0.98]">
+                            <span class="relative z-10 flex items-center">ACHETER LA PHOTO <i class="fa-solid fa-cart-shopping ml-3"></i></span>
                             <div class="absolute inset-0 h-full w-full bg-white/30 skew-x-12 -translate-x-full group-hover:translate-x-full transition duration-700 ease-in-out z-0"></div>
                         </button>
-                        <p class="text-xs text-center text-gray-500 mt-4 flex items-center justify-center"><i class="fa-solid fa-lock mr-2"></i> Paiement 100% sécurisé.</p>
+                        
+                        <div class="flex justify-center items-center space-x-4 mt-6 text-xs text-gray-500">
+                            <span class="flex items-center"><i class="fa-solid fa-lock mr-2 text-tysonGold"></i> Paiement Sécurisé</span>
+                            <span class="h-4 w-px bg-gray-700"></span>
+                            <span class="flex items-center"><i class="fa-solid fa-scale-balanced mr-2 text-tysonGold"></i> Huissier de Justice</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -221,77 +306,174 @@
                     Oiseau<span class="text-tysonGold">Tyson</span>
                 </div>
                 <p class="text-gray-500 text-sm leading-relaxed">
-                    Le concours officiel pour la communauté. Des lots d'exception, une transparence totale, pour la miff.
+                    Le concours officiel de fin d'année pour la communauté. Des lots d'exception, une transparence totale, pour la miff.
                 </p>
             </div>
             
             <div class="md:col-span-1">
                 <h4 class="text-sm font-bold text-white uppercase tracking-widest mb-6 text-tysonGold">Infos Légales</h4>
                 <ul class="space-y-3 text-sm text-gray-400">
-                    <li><a href="#" class="hover:text-tysonGold transition"><i class="fa-solid fa-chevron-right text-xs mr-2"></i> Règlement du jeu</a></li>
-                    <li><a href="#" class="hover:text-tysonGold transition"><i class="fa-solid fa-chevron-right text-xs mr-2"></i> Mentions Légales</a></li>
-                    <li><a href="#" class="hover:text-tysonGold transition"><i class="fa-solid fa-chevron-right text-xs mr-2"></i> CGV / CGU</a></li>
-                    <li><a href="#" class="hover:text-tysonGold transition"><i class="fa-solid fa-chevron-right text-xs mr-2"></i> Politique de confidentialité</a></li>
+                    <li><a href="#" class="hover:text-tysonGold transition flex items-center"><i class="fa-solid fa-chevron-right text-[10px] mr-2 text-tysonGold/50"></i> Règlement du jeu</a></li>
+                    <li><a href="#" class="hover:text-tysonGold transition flex items-center"><i class="fa-solid fa-chevron-right text-[10px] mr-2 text-tysonGold/50"></i> Mentions Légales</a></li>
+                    <li><a href="#" class="hover:text-tysonGold transition flex items-center"><i class="fa-solid fa-chevron-right text-[10px] mr-2 text-tysonGold/50"></i> CGV / CGU</a></li>
+                    <li><a href="#" class="hover:text-tysonGold transition flex items-center"><i class="fa-solid fa-chevron-right text-[10px] mr-2 text-tysonGold/50"></i> Politique de confidentialité</a></li>
                 </ul>
             </div>
 
             <div class="md:col-span-2">
                 <h4 class="text-sm font-bold text-white uppercase tracking-widest mb-6 text-tysonGold">Notre Mission</h4>
+                
                 <div class="grid md:grid-cols-2 gap-6">
                     <div>
-                        <h5 class="text-base font-bold text-white mb-2 flex items-center"><i class="fa-solid fa-hand-fist text-tysonGold mr-2"></i> C'est pour la force</h5>
-                        <p class="text-gray-500 text-sm leading-relaxed">Un concours pour remercier les vrais. Merci pour la force.</p>
+                        <h5 class="text-base font-bold text-white mb-2 flex items-center"><i class="fa-solid fa-hand-fist text-tysonGold mr-3"></i> C'est pour la force</h5>
+                        <p class="text-gray-500 text-sm leading-relaxed">
+                            Un concours organisé pour remercier les vrais. Merci pour le soutien et la force que vous donnez au quotidien.
+                        </p>
                     </div>
                     <div>
-                        <h5 class="text-base font-bold text-white mb-2 flex items-center"><i class="fa-solid fa-crown text-tysonGold mr-2"></i> Validé par le Boss</h5>
-                        <p class="text-gray-500 text-sm leading-relaxed">La Mégane 4 a été sélectionnée par Tyson pour régaler la communauté.</p>
+                        <h5 class="text-base font-bold text-white mb-2 flex items-center"><i class="fa-solid fa-gift text-tysonGold mr-3"></i> Noël avant l'heure</h5>
+                        <p class="text-gray-500 text-sm leading-relaxed">
+                            La Mégane 4 a été emballée spécialement par Oiseau Tyson pour régaler la communauté pour les fêtes.
+                        </p>
                     </div>
                     <div class="md:col-span-2">
-                        <h5 class="text-base font-bold text-white mb-2 flex items-center"><i class="fa-solid fa-scale-balanced text-tysonGold mr-2"></i> 100% Transparence</h5>
-                        <p class="text-gray-500 text-sm leading-relaxed">Tirage équitable sous contrôle d'huissier et résultats publics.</p>
+                        <h5 class="text-base font-bold text-white mb-2 flex items-center"><i class="fa-solid fa-scale-balanced text-tysonGold mr-3"></i> 100% Transparence</h5>
+                        <p class="text-gray-500 text-sm leading-relaxed">
+                            Ici pas de vice. Tirage au sort équitable, règlement déposé chez huissier de justice et résultats annoncés publiquement sur les réseaux.
+                        </p>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="text-center text-gray-600 text-sm mt-16 pt-8 border-t border-tysonGray">
-            © 2024 Oiseau Tyson. Tous droits réservés. Ceci n'est pas une tombola mais une vente de produits numériques avec prime.
+        <div class="text-center text-gray-600 text-xs mt-16 pt-8 border-t border-tysonGray/50 px-4">
+            <p>© 2024 Oiseau Tyson. Tous droits réservés.</p>
+            <p class="mt-2">Ceci n'est pas une tombola mais une vente de produits numériques (photos artistiques) avec prime (participation à un jeu-concours), conformément à la législation française.</p>
         </div>
     </footer>
 
     <script>
-        // GESTION DU MENU MOBILE
+        // --- 1. GESTION DU MENU MOBILE ---
         const menuBtn = document.getElementById('mobile-menu-btn');
         const mobileMenu = document.getElementById('mobile-menu');
+        const menuIcon = menuBtn.querySelector('i');
 
-        menuBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
-
-        // Fonction pour fermer le menu quand on clique sur un lien
         function toggleMenu() {
-            mobileMenu.classList.add('hidden');
+            mobileMenu.classList.toggle('hidden');
+            // Change l'icône (barres <-> croix)
+            if (mobileMenu.classList.contains('hidden')) {
+                menuIcon.classList.remove('fa-xmark');
+                menuIcon.classList.add('fa-bars');
+            } else {
+                menuIcon.classList.remove('fa-bars');
+                menuIcon.classList.add('fa-xmark');
+            }
         }
 
-        // CALCULATEUR DE PRIX
+        menuBtn.addEventListener('click', toggleMenu);
+
+        // Fermer le menu si on clique en dehors
+        document.addEventListener('click', (e) => {
+            if (!menuBtn.contains(e.target) && !mobileMenu.contains(e.target) && !mobileMenu.classList.contains('hidden')) {
+                toggleMenu();
+            }
+        });
+
+
+        // --- 2. COMPTE À REBOURS (Cible : 24 Décembre à minuit) ---
+        // On définit la date cible (Année en cours, Mois 11 = Décembre car ça commence à 0, Jour 24)
+        const currentYear = new Date().getFullYear();
+        // Attention : le mois est indexé à 0 en JS, donc 11 = Décembre
+        let targetDate = new Date(currentYear, 11, 24, 0, 0, 0).getTime();
+        
+        // Si on est déjà après le 24 déc de cette année, on vise l'année prochaine
+        if (new Date().getTime() > targetDate) {
+             targetDate = new Date(currentYear + 1, 11, 24, 0, 0, 0).getTime();
+        }
+
+        // Mise à jour chaque seconde
+        const countdownInterval = setInterval(function() {
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+
+            // Calculs mathématiques pour obtenir jours, heures, minutes, secondes
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            // Affichage dans le HTML (ajout d'un "0" si le chiffre est < 10)
+            document.getElementById("d").innerText = days < 10 ? "0" + days : days;
+            document.getElementById("h").innerText = hours < 10 ? "0" + hours : hours;
+            document.getElementById("m").innerText = minutes < 10 ? "0" + minutes : minutes;
+            document.getElementById("s").innerText = seconds < 10 ? "0" + seconds : seconds;
+
+            // Si le compte à rebours est terminé
+            if (distance < 0) {
+                clearInterval(countdownInterval);
+                document.getElementById("d").innerText = "00";
+                document.getElementById("h").innerText = "00";
+                document.getElementById("m").innerText = "00";
+                document.getElementById("s").innerText = "00";
+                // Optionnel : Afficher un message "C'est terminé !"
+            }
+        }, 1000);
+
+
+        // --- 3. CALCULATEUR DE PRIX ET QUANTITÉ ---
         let quantity = 1;
-        const unitPrice = 5;
+        const unitPrice = 5.00; // Prix unitaire
+        const tvaRate = 0.20; // Taux de TVA (20%)
 
         function updateQuantity(change) {
             const newQty = quantity + change;
+            // On s'assure que la quantité ne descend pas en dessous de 1
             if (newQty >= 1) {
                 quantity = newQty;
+                
+                // Mise à jour de l'affichage de la quantité
                 document.getElementById('qty').innerText = quantity;
-                const formattedPrice = (quantity * unitPrice).toFixed(2).replace('.', ',') + ' €';
+                
+                // Calcul du prix total
+                const total = quantity * unitPrice;
+                // Formatage en français (virgule au lieu de point, 2 décimales)
+                const formattedPrice = total.toFixed(2).replace('.', ',') + ' €';
                 document.getElementById('totalPrice').innerText = formattedPrice;
-                const chanceLabel = quantity > 1 ? "chances" : "chance";
+
+                // Calcul et affichage de la TVA (Montant HT * Taux TVA)
+                // Montant HT = Total TTC / (1 + Taux TVA)
+                const totalHT = total / (1 + tvaRate);
+                const tvaAmount = total - totalHT;
+                 document.getElementById('tvaPrice').innerText = tvaAmount.toFixed(2).replace('.', ',') + ' €';
+                
+                // Mise à jour du texte dynamique des chances (pluriel/singulier)
+                const chanceLabel = quantity > 1 ? "Chances" : "Chance";
+                // On ajoute l'icône et le texte
                 document.getElementById('chancesText').innerHTML = '<i class="fa-solid fa-ticket-simple mr-2"></i> ' + quantity + " " + chanceLabel;
             }
         }
 
+        // --- 4. FONCTION DE PAIEMENT (CHECKOUT) ---
         function checkout() {
-            const montantTotal = quantity * unitPrice;
-            alert("⚠️ À CONFIGURER : Lien Stripe vers le paiement de " + montantTotal + "€ pour " + quantity + " photos.");
-            // window.location.href = 'TON_LIEN_STRIPE_ICI'; 
+            const montantTotal = (quantity * unitPrice).toFixed(2);
+            
+            // ==============================================================================
+            // ⚠️ C'EST ICI QUE TU DOIS CONNECTER TON SYSTÈME DE PAIEMENT (STRIPE, ETC.) ⚠️
+            // ==============================================================================
+            
+            // Pour l'instant, c'est une simple alerte de démonstration.
+            alert(`🚀 Redirection vers la page de paiement sécurisée...\n\n📦 Commande : ${quantity} Photo(s)\n🎁 Bonus : ${quantity} Chance(s)\n💰 Total à régler : ${montantTotal} €\n\n(Note : Tu devras remplacer cette alerte par ton vrai lien de paiement Stripe dans le code JavaScript.)`);
+            
+            // EXEMPLE D'INTÉGRATION STRIPE (COMMENTÉ) :
+            /*
+            if (quantity === 1) {
+                window.location.href = 'TON_LIEN_STRIPE_POUR_1_PHOTO';
+            } else if (quantity === 2) {
+                window.location.href = 'TON_LIEN_STRIPE_POUR_2_PHOTOS';
+            } else {
+                // Idéalement, utiliser l'API Stripe pour passer la quantité dynamiquement
+                console.log("Redirection vers un lien générique ou API...");
+            }
+            */
         }
     </script>
 </body>
